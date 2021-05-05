@@ -103,10 +103,9 @@ class UserRepository
     }
 
     //Login
-    public function first($token)
+    public function check($token)
     {
-        $session = SessionUser::where('token', $token)->first();
-        return User::findOrFail($session->user_id);
+        return SessionUser::wheretoken($token)->first();
     }
     public function get()
     {

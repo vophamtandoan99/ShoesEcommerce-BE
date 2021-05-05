@@ -18,19 +18,19 @@ class Auth
     public function handle($request, Closure $next)
     {
         $token = $request->header('token');
-        $checkTokenIsValid = $this->userRepository->first($token);
+        $session = $this->userRepository->check($token);
         if(empty($token)){
             return response()->json([
                 'code' => 500,
                 'message' => 'Tokens are not sent through the header'
             ], 500);
-        }elseif(empty($checkTokenIsValid)){
+        }elseif(empty($session)){
             return response()->json([
                 'code' => 500,
                 'message' => 'Invalid token'
             ], 500);
         }else{
-             return $next($request);
+                return $next($request);
         }
     }
 }
