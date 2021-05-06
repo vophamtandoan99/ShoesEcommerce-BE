@@ -32,6 +32,11 @@ Route::group(['namespace' => 'Api', 'middleware' => ['cors']], function () {
         //login
             Route::post('login', 'LoginController@login')->name('login');
 
+        //Product - Category - Supplier == WEB PAGE
+            Route::get('category', 'CategoryController@search');
+            Route::get('supplier', 'SupplierController@search');
+            Route::get('product', 'ProductController@search');
+
     /*
     |--------------------------------------------------------------------------
     | ADMIN PAGE
@@ -45,19 +50,16 @@ Route::group(['namespace' => 'Api', 'middleware' => ['cors']], function () {
             |--------------------------------------------------------------------------
             */
                 //Category
-                Route::get('category', 'CategoryController@search');
                 Route::post('category', 'CategoryController@store');
                 Route::get('category/{id}', 'CategoryController@show');
                 Route::put('category/{id}', 'CategoryController@update');
 
                 //Supplier
-                Route::get('supplier', 'SupplierController@search');
                 Route::post('supplier', 'SupplierController@store');
                 Route::get('supplier/{id}', 'SupplierController@show');
                 Route::put('supplier/{id}', 'SupplierController@update');
 
                 //Product
-                Route::get('product', 'ProductController@search');
                 Route::get('product/{id}', 'ProductController@show');
                 Route::post('product', 'ProductController@store');
                 Route::put('product/{id}', 'ProductController@update');

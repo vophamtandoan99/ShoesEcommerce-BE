@@ -101,6 +101,12 @@ class UserRepository
         return User::findOrFail($id)
                 ->update($inputs);
     }
+    
+    public function first($token)
+    {
+        $session = SessionUser::where('token', $token)->first();
+        return User::findOrFail($session->user_id);
+    }
 
     //Login
     public function check($token)
