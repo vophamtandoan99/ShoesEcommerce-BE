@@ -41,13 +41,13 @@ class BillRepository
             'status'      => 1,
         ]);
     }
-    public function storeBillDetail($bill_id, $PSCdata, $rowCart)
+    public function storeBillDetail($bill_id, $PSCdata, $rowCart, $price)
     {
         return BillDetail::create([
             'id_bill'               => $bill_id,
             'id_product_size_color' => $PSCdata[0]['id'],
             'amount'                => $rowCart['quantity'],
-            'price'                 => $rowCart['price']
+            'price'                 => $price
         ]);
     }
 
@@ -58,7 +58,7 @@ class BillRepository
     }
     public function showPSC($rowCart)
     {
-        return ProductSizeColor::whereproduct_id($rowCart['id'])
+        return ProductSizeColor::whereproduct_id($rowCart['product_id'])
             ->wheresize_id($rowCart['size_id'])
             ->wherecolor_id($rowCart['color_id'])
             ->get();

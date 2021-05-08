@@ -12,21 +12,25 @@ use App\Repositories\BillRepository;
 use App\Http\Resources\customer\CustomerCollection;
 use App\Http\Resources\customer\CustomerResource;
 use Illuminate\Http\Request;
-use App\Http\Requests\CustomerRequest;
+use App\Http\Requests\CustomerBillRequest;
 use App\Http\Resources\bill\BillResource;
 use App\Http\Resources\BaseResource;
+use App\Http\Resources\cart\CartCollection;
+use App\Repositories\CartRepository;
 
 class BillController
 {
     private $billRepository;
     private $customerRepository;
     private $productRepository;
+    private $cartRepository;
 
-    public function __construct(BillRepository $billRepository, CustomerRepository $customerRepository, ProductRepository $productRepository)
+    public function __construct(BillRepository $billRepository, CustomerRepository $customerRepository, ProductRepository $productRepository, CartRepository $cartRepository)
     {
         $this->billRepository       = $billRepository;
         $this->customerRepository   = $customerRepository;
         $this->productRepository    = $productRepository;
+        $this->cartRepository       = $cartRepository;
     }
 
     //Index-Search Bill
@@ -36,29 +40,35 @@ class BillController
     }
 
     //Store Bill & BillDetail
-    public function store(Request $request, CustomerRequest $customerRequest, BillRequest $billRequest)
+    public function store(Request $request, CustomerBillRequest $customerRequest, BillRequest $billRequest)
     {
-        $items = session('cart');
+        $customer_id = $request->header('customer_id');
+        $items = new CartCollection($this->cartRepository->show($customer_id));
         if(!empty($items)){
             $totalPrice          = 0;
             $totalQuantity       = 0;
             foreach($items as $rowCart){
-                $totalPrice      += $rowCart['price']*$rowCart['quantity'];
-                $totalQuantity   += $rowCart['quantity'];
+                $price = $rowCart->product_export_price ? $rowCart->product_export_price : $rowCart->product_import_price;
+                $totalPrice      += $price*$rowCart->quantity;
+                $totalQuantity   += $rowCart->quantity;
             }
             $cart = [
                 'items'          => $items,
                 'total_price'    => $totalPrice,
                 'total_quantity' => $totalQuantity
             ];
-            $customer = new CustomerResource($this->customerRepository->store($customerRequest->storeFilter()));
+            // return $cart;
+            $customerUpdate = $this->customerRepository->update($customerRequest->storeFilter(), $customer_id);//new CustomerResource();
+            $customer = new CustomerResource($this->customerRepository->show($customer_id));
             $bill = new BillResource($this->billRepository->store($billRequest->storeFilter(), $customer->id, $cart));
             foreach($cart['items'] as $rowCart){
                 $PSCdata = $this->billRepository->showPSC($rowCart);
-                $billDetail = new BaseResource($this->billRepository->storeBillDetail($bill->id, $PSCdata, $rowCart));
+                $price = $rowCart->product_export_price ? $rowCart->product_export_price : $rowCart->product_import_price;
+                $billDetail = new BaseResource($this->billRepository->storeBillDetail($bill->id, $PSCdata, $rowCart, $price));
             }
             $showBillDetail = new DetailCollection($this->billRepository->showBillDetail($bill->id));
-            $request->session()->forget('cart');
+            //deleteCart
+            $this->cartRepository->clear($customer_id);
             return [
                 'customer' => $customer,
                 'bill' => $bill,

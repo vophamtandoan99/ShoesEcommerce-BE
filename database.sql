@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th5 04, 2021 lúc 06:44 PM
+-- Thời gian đã tạo: Th5 08, 2021 lúc 09:45 AM
 -- Phiên bản máy phục vụ: 10.4.17-MariaDB
 -- Phiên bản PHP: 8.0.2
 
@@ -44,7 +44,7 @@ CREATE TABLE `bill` (
 --
 
 INSERT INTO `bill` (`id`, `customer_id`, `total`, `payment`, `dateorder`, `note`, `status`, `created_at`, `updated_at`) VALUES
-(27, 45, 480000, 'Tiền mặt', '2021-04-16', 'Vui lòng gửi đúng mẫu mã size giày', 1, '2021-04-16 03:04:55', '2021-04-16 03:04:55');
+(41, 56, 1100000, 'Thanh toán khi nhận hàng', '2021-05-08', 'Vui lòng giao đúng sản phẩm', 1, '2021-05-08 00:42:05', '2021-05-08 00:43:26');
 
 -- --------------------------------------------------------
 
@@ -67,8 +67,25 @@ CREATE TABLE `bills_detail` (
 --
 
 INSERT INTO `bills_detail` (`id`, `id_bill`, `id_product_size_color`, `amount`, `price`, `created_at`, `updated_at`) VALUES
-(5, 27, 26, 3, 100000, '2021-04-16 03:04:55', '2021-04-16 03:04:55'),
-(6, 27, 23, 6, 30000, '2021-04-16 03:04:55', '2021-04-16 03:04:55');
+(10, 41, 26, 7, 100000, '2021-05-08 00:42:05', '2021-05-08 00:42:05'),
+(11, 41, 36, 5, 80000, '2021-05-08 00:42:05', '2021-05-08 00:42:05');
+
+-- --------------------------------------------------------
+
+--
+-- Cấu trúc bảng cho bảng `cart`
+--
+
+CREATE TABLE `cart` (
+  `id` bigint(20) NOT NULL,
+  `customer_id` bigint(20) NOT NULL,
+  `product_id` int(100) NOT NULL,
+  `color_id` int(100) NOT NULL,
+  `size_id` int(100) NOT NULL,
+  `quantity` int(100) NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
@@ -135,9 +152,10 @@ INSERT INTO `color` (`id`, `color`, `created_at`, `updated_at`) VALUES
 CREATE TABLE `customer` (
   `id` bigint(20) NOT NULL,
   `email` varchar(255) NOT NULL,
-  `name` varchar(255) NOT NULL,
-  `phone` varchar(10) NOT NULL,
-  `address` varchar(256) NOT NULL,
+  `name` varchar(255) DEFAULT NULL,
+  `password` varchar(256) CHARACTER SET utf8 NOT NULL,
+  `phone` varchar(10) DEFAULT NULL,
+  `address` varchar(256) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -146,8 +164,13 @@ CREATE TABLE `customer` (
 -- Đang đổ dữ liệu cho bảng `customer`
 --
 
-INSERT INTO `customer` (`id`, `email`, `name`, `phone`, `address`, `created_at`, `updated_at`) VALUES
-(45, 'doan@gmail.com', 'Võ Phạm Tấn Đoan', '0337338920', 'Phú Yên', '2021-04-16 03:04:55', '2021-04-16 03:04:55');
+INSERT INTO `customer` (`id`, `email`, `name`, `password`, `phone`, `address`, `created_at`, `updated_at`) VALUES
+(45, 'doan@gmail.com', 'Võ Phạm Tấn Đoan', '', '0337338920', 'Phú Yên', '2021-04-16 03:04:55', '2021-04-16 03:04:55'),
+(52, 'admin@gmail.com', NULL, '12345678', NULL, NULL, '2021-05-07 09:22:31', '2021-05-07 09:22:31'),
+(53, 'sadmin@gmail.com', NULL, '25d55ad283aa400af464c76d713c07ad', NULL, NULL, '2021-05-07 09:23:12', '2021-05-07 09:23:12'),
+(54, 'doanadmin@gmail.com', NULL, 'eyJpdiI6Im5jckd2QWRpNit2ZmVMbnFybVBBdnc9PSIsInZhbHVlIjoiZ2Q3akgzY2xITVgyamo5d3NaN1F3dz09IiwibWFjIjoiNTM1NzE0ZmE1NDNhNTJmMzE0ZGQ1ODI0YTdlOWJiNTlmNDY3NjllOWE1Y2E1YTIxODM3ZDMwYjc5YTU3ZWNhYSJ9', NULL, NULL, '2021-05-07 09:31:35', '2021-05-07 09:31:35'),
+(55, 'sssdsdsdoanadmin@gmail.com', NULL, 'eyJpdiI6InFLMmNpMGlRU1I5d2lISkJzdU44SUE9PSIsInZhbHVlIjoiRXY5akhwVUtBaFd6Q0lFdDNvVXU3UT09IiwibWFjIjoiODBlOWU5NzIzMDI0MmMxMjc3NjdkZjkxZDIwY2Y3MWNjZjQ0MGNiZTdiNjFjNjg2NjBlMWUyODkyZGEyZDg2MiJ9', NULL, NULL, '2021-05-07 09:50:57', '2021-05-07 09:50:57'),
+(56, 'hoainhu@gmail.com', 'Võ Phạm Tấn Đoan', 'eyJpdiI6ImQzektQOExEa2x1RStSeGdPUDBUK3c9PSIsInZhbHVlIjoiTVF3Tk14bkx2bGhMQnJkL2NNZ2htU0RwVUZ5eVc3UlhxWVBNOXpkR2d5bz0iLCJtYWMiOiIxZjcxZWU0YzNkNDUyZDY5MzU5ZmZkMzA3OTA5ZDQxNWVjNGVlZmU3YTZmZGZjOTc3M2U3MjBmNjE3Yzg5NGY2In0=', '0337338920', 'Đông Hòa, Phú Yên', '2021-05-07 10:06:28', '2021-05-08 00:20:42');
 
 -- --------------------------------------------------------
 
@@ -178,12 +201,12 @@ CREATE TABLE `product` (
 INSERT INTO `product` (`id`, `name`, `amount`, `img`, `note`, `import_price`, `export_price`, `sale`, `status`, `supplier_id`, `category_id`, `created_at`, `updated_at`) VALUES
 (227, 'Giày thể thao nữ', 500, '657728473.png', 'Giày nhập khẩu', 100000, 30000, 30, 1, 1, 1, '2021-04-11 19:07:57', '2021-04-11 19:07:57'),
 (228, 'Giày thể thao nam', 500, '118294873.png', 'Giày nhập khẩu', 100000, 30000, 30, 1, 1, 1, '2021-04-11 19:08:25', '2021-04-11 19:08:25'),
-(229, 'Dép Nike', 100, '1245428979.png', 'Dép có vai', 100000, 0, 0, 1, 1, 1, '2021-04-11 23:15:52', '2021-04-11 23:15:52'),
+(229, 'Dép Nike', 93, '1245428979.png', 'Dép có vai', 100000, 0, 0, 1, 1, 1, '2021-04-11 23:15:52', '2021-05-08 00:43:26'),
 (230, 'Giày thể thao nữ nike', 1000, '1797230646.jpg', 'Giày thể thao nữ chất lượng cao, hàng nhập khẩu', 100000, 80000, 20, 1, 1, 2, '2021-05-04 08:21:29', '2021-05-04 08:21:29'),
 (231, 'Huỳnh Thị Hoài Như', 400, '1330958637.jpg', 'Huỳnh Thị Hoài Như', 100000, 90000, 10, 1, 1, 2, '2021-05-04 08:22:03', '2021-05-04 08:43:22'),
 (232, 'Giày thể thao nữ nikeffff', 1000, '23210120.jpg', 'Giày thể thao nữ chất lượng cao, hàng nhập khẩu', 100000, 80000, 20, 1, 1, 2, '2021-05-04 08:36:24', '2021-05-04 08:36:24'),
 (233, 'Giày thể thao nữ nikeffffsdsdsds', 1000, '727918099.jpg', 'Giày thể thao nữ chất lượng cao, hàng nhập khẩu', 100000, 80000, 20, 1, 1, 2, '2021-05-04 08:36:36', '2021-05-04 08:36:36'),
-(234, 'Giày', 997, '1239509936.jpg', 'Giày thể thao nữ chất lượng cao, hàng nhập khẩu', 100000, 80000, 20, 1, 1, 2, '2021-05-04 08:38:22', '2021-05-04 09:35:31');
+(234, 'Giày', 992, '1239509936.jpg', 'Giày thể thao nữ chất lượng cao, hàng nhập khẩu', 100000, 80000, 20, 1, 1, 2, '2021-05-04 08:38:22', '2021-05-08 00:43:26');
 
 -- --------------------------------------------------------
 
@@ -210,7 +233,7 @@ INSERT INTO `product_size_color` (`id`, `product_id`, `size_id`, `color_id`, `am
 (22, 227, 126, 139, 250, '2021-04-11 19:07:57', '2021-04-11 19:07:57'),
 (23, 228, 125, 140, 250, '2021-04-11 19:08:25', '2021-04-11 19:08:25'),
 (25, 229, 126, 139, 50, '2021-04-11 23:15:52', '2021-04-11 23:15:52'),
-(26, 229, 125, 141, 50, '2021-04-11 23:15:52', '2021-04-11 23:15:52'),
+(26, 229, 125, 141, 43, '2021-04-11 23:15:52', '2021-05-08 00:43:26'),
 (27, 230, 125, 140, 500, '2021-05-04 08:21:29', '2021-05-04 08:21:29'),
 (28, 230, 126, 141, 500, '2021-05-04 08:21:29', '2021-05-04 08:21:29'),
 (29, 231, 126, 139, 200, '2021-05-04 08:22:03', '2021-05-04 08:34:11'),
@@ -220,7 +243,7 @@ INSERT INTO `product_size_color` (`id`, `product_id`, `size_id`, `color_id`, `am
 (33, 233, 125, 140, 500, '2021-05-04 08:36:36', '2021-05-04 08:36:36'),
 (34, 233, 126, 141, 500, '2021-05-04 08:36:36', '2021-05-04 08:36:36'),
 (35, 234, 125, 140, 500, '2021-05-04 08:38:22', '2021-05-04 08:38:22'),
-(36, 234, 126, 141, 497, '2021-05-04 08:38:22', '2021-05-04 09:35:31');
+(36, 234, 126, 141, 492, '2021-05-04 08:38:22', '2021-05-08 00:43:26');
 
 -- --------------------------------------------------------
 
@@ -293,7 +316,8 @@ INSERT INTO `supplier` (`id`, `category_id`, `name`, `address`, `phone`, `status
 (1, 1, 'Nike', 'USA', '1232456', 1, '2021-03-31 04:07:32', '2021-03-31 04:07:32'),
 (2, 2, 'ADIDAS', 'Việt Nam', '963852741', 1, '2021-03-31 04:07:32', '2021-03-31 04:07:32'),
 (12, 1, 'Đoan', 'Phú Yên', '1232456', 1, '2021-04-06 09:45:43', '2021-04-06 09:45:43'),
-(18, 1, 'VO Pham Tan Doan', 'Phu Yen', '0337338920', 1, '2021-05-04 07:54:59', '2021-05-04 07:59:33');
+(18, 1, 'VO Pham Tan Doan', 'Phu Yen', '0337338920', 1, '2021-05-04 07:54:59', '2021-05-04 07:59:33'),
+(19, 1, 'Zét lê', 'Quy Nhơn', '0369852147', 1, '2021-05-07 06:18:28', '2021-05-07 06:18:28');
 
 -- --------------------------------------------------------
 
@@ -345,6 +369,12 @@ ALTER TABLE `bills_detail`
   ADD PRIMARY KEY (`id`),
   ADD KEY `id_bill` (`id_bill`),
   ADD KEY `id_product_size_color` (`id_product_size_color`);
+
+--
+-- Chỉ mục cho bảng `cart`
+--
+ALTER TABLE `cart`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Chỉ mục cho bảng `category`
@@ -414,13 +444,19 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT cho bảng `bill`
 --
 ALTER TABLE `bill`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=42;
 
 --
 -- AUTO_INCREMENT cho bảng `bills_detail`
 --
 ALTER TABLE `bills_detail`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+
+--
+-- AUTO_INCREMENT cho bảng `cart`
+--
+ALTER TABLE `cart`
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT cho bảng `category`
@@ -438,7 +474,7 @@ ALTER TABLE `color`
 -- AUTO_INCREMENT cho bảng `customer`
 --
 ALTER TABLE `customer`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=47;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=57;
 
 --
 -- AUTO_INCREMENT cho bảng `product`
@@ -468,7 +504,7 @@ ALTER TABLE `size`
 -- AUTO_INCREMENT cho bảng `supplier`
 --
 ALTER TABLE `supplier`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- AUTO_INCREMENT cho bảng `users`

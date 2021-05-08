@@ -49,6 +49,7 @@ class Kernel extends HttpKernel
         'bindings' => \Illuminate\Routing\Middleware\SubstituteBindings::class,
         'cors' => \App\Http\Middleware\Cors::class,
         'role' => \App\Http\Middleware\Role::class,
+        'customer' => \App\Http\Middleware\Customer::class,
         \Illuminate\Session\Middleware\StartSession::class,
         \Illuminate\View\Middleware\ShareErrorsFromSession::class,
     ];

@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class CustomerRequest extends FormRequest
+class CustomerBillRequest extends FormRequest
 {
     public function authorize()
     {
@@ -17,16 +17,17 @@ class CustomerRequest extends FormRequest
     public function storeRules(): array
     {
         return [
-            'email'             => 'required|email|min:0|max:50|unique:customer',
-            'password'          => 'required|min:5|max:30',
-            'confirmpassword'   => 'required|same:password',
+            'name'      => 'required|string|min:0|max:50',
+            'phone'     => 'required|min:5|max:30',
+            'address'   => 'required|string|min:0|max:150',
         ];
     }
     public function storeFilter()
     {
         return $this->only([
-            'email',
-            'password'
+            'name',
+            'phone',
+            'address'
         ]);
     }
 }

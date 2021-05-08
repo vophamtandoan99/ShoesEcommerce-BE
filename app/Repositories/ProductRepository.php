@@ -155,15 +155,6 @@ class ProductRepository
     //     ->paginate(10);
     // }
 
-    //Cart
-    public function showCart($inputs)
-    {
-        return [
-            'product'   => Product::findOrFail($inputs['id']),
-            'size'      => Size::findOrFail($inputs['size_id']),
-            'color'     => Color::findOrFail($inputs['color_id'])
-        ];
-    }
 
 
     //Note

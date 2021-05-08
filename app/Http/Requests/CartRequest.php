@@ -42,7 +42,6 @@ class CartRequest extends FormRequest
     //Update Cart
     public function updateRules(): array
     {
-        $id = $this->id;
         return[
             'quantity' => 'numeric',
         ];

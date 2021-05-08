@@ -18,24 +18,35 @@ Route::group(['namespace' => 'Api', 'middleware' => ['cors']], function () {
             //Color, Size theo Product
             Route::get('product-color/{id}', 'HomeController@getProductColor')->name('product.color');
             Route::get('product-size/{product}/{color}', 'HomeController@getProductSize')->name('product.size');
+            
+        //Product - Category - Supplier == WEB PAGE
+        Route::get('category', 'CategoryController@search');
+        Route::get('supplier', 'SupplierController@search');
+        Route::get('product', 'ProductController@search');
         
-        //Cart
-            Route::post('add-cart', 'CartController@add')->name('cart.add');
-            Route::get('update-cart/{id}', 'CartController@update')->name('cart.update');
-            Route::get('remove/{id}', 'CartController@remove')->name('cart.remove');
-            Route::get('clear', 'CartController@clear')->name('cart.clear');
-            Route::get('view-cart', 'CartController@view')->name('cart.view');
-
-        //Payment (store bill)
-            Route::post('bill', 'BillController@store')->name('bill.store');
-     
-        //login
+        //Login ADMIN
             Route::post('login', 'LoginController@login')->name('login');
 
-        //Product - Category - Supplier == WEB PAGE
-            Route::get('category', 'CategoryController@search');
-            Route::get('supplier', 'SupplierController@search');
-            Route::get('product', 'ProductController@search');
+        //Customer
+            //Register customer
+            Route::post('customer', 'CustomerController@store');
+            //Login WEB PAGE
+            Route::post('login-customer', 'CustomerController@login');
+
+        //Payment WEB PAGE
+        Route::group(['middleware' => ['customer']], function () {
+            //Cart
+            Route::post('add-cart', 'CartController@add');
+            Route::get('view-cart', 'CartController@view');
+            Route::get('remove/{id}', 'CartController@remove');
+            Route::get('clear', 'CartController@clear');
+            Route::put('update-cart/{id}', 'CartController@update');
+            //Payment (store bill)
+            Route::post('bill', 'BillController@store');
+        });
+
+        //Logout
+        Route::get('logout', 'LoginController@logout');
 
     /*
     |--------------------------------------------------------------------------
@@ -96,7 +107,7 @@ Route::group(['namespace' => 'Api', 'middleware' => ['cors']], function () {
                 Route::delete('bill/{id}', 'BillController@destroy')->name('bill.destroy');
                 Route::get('statistical', 'BillController@statistical')->name('bill.statistical');
 
-                //Logout
-                Route::get('logout', 'LoginController@logout')->name('user.logout');
+                // //Logout
+                // Route::get('logout', 'LoginController@logout')->name('user.logout');
     });
 });
