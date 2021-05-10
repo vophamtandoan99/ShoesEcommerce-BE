@@ -128,14 +128,14 @@ class UserRepository
         ]);
         return User::where('users.id', auth()->id())
                 ->join('session_users', 'users.id', '=', 'session_users.user_id')
-                ->select('session_users.token as token', 'users.name', 'users.email', 'users.img')
+                ->select('session_users.token as token', 'users.name', 'users.email', 'users.img', 'users.role')
                 ->paginate();
     }
     public function getUserSession()
     {
         return User::where('users.id', auth()->id())
                 ->join('session_users', 'users.id', '=', 'session_users.user_id')
-                ->select('session_users.token as token', 'users.name', 'users.email', 'users.img')
+                ->select('session_users.token as token', 'users.name', 'users.email', 'users.img', 'user.role')
                 ->paginate();
     }
     public function updateToken($id)
