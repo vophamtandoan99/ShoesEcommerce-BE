@@ -17,6 +17,7 @@ use App\Http\Resources\bill\BillResource;
 use App\Http\Resources\BaseResource;
 use App\Http\Resources\cart\CartCollection;
 use App\Repositories\CartRepository;
+use Mail;
 
 class BillController
 {
@@ -69,11 +70,21 @@ class BillController
             $showBillDetail = new DetailCollection($this->billRepository->showBillDetail($bill->id));
             //deleteCart
             $this->cartRepository->clear($customer_id);
-            return [
+            $dataresult = [
                 'customer' => $customer,
                 'bill' => $bill,
                 'billDetail' => $showBillDetail
-            ];     
+            ]; 
+            //mail
+                $to_name = "Shoes E-commerce";
+                $to_mail = 'shyneward123@gmail.com';//$customer->email;
+                $data = ['name'=>"Shoes", "details"=>$dataresult];
+                Mail::send('mail', $data, function($message) use ($to_name, $to_mail){
+                    $message->to($to_mail)->subject('Đơn hàng từ Shoes E-commerce');
+                    $message->from($to_mail, $to_name);
+                });
+            
+            return $dataresult;
         }
     }
     public function show($id)

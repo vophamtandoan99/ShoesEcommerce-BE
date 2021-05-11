@@ -11,10 +11,11 @@ class DetailCollection extends BaseCollection
             return [
                 'id_bill'   => $billDetail->id_bill,
                 'name'      => $billDetail->name,
+                'img'       => $billDetail->img,
                 'size '     => $billDetail->size ,
                 'color'     => $billDetail->color,
                 'price'     => $billDetail->price,
-                'amount'    => $billDetail->amount
+                'amount'    => $billDetail->amount,
             ];
         });
     }

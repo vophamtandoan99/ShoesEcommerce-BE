@@ -70,7 +70,7 @@ class BillRepository
             ->join('size','product_size_color.size_id', '=', 'size.id')
             ->join('color','product_size_color.color_id', '=', 'color.id')
             ->join('product', 'product_size_color.product_id', '=', 'product.id')
-            ->select('bills_detail.id_bill as id_bill',
+            ->select('bills_detail.id_bill as id_bill', 'product.img as img',
                     'product.name as name', 'product.id as product_id',
                     'size.id as size_id', 'color.id as color_id',
                     'size.size as size','color.color as color',
