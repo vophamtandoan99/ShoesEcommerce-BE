@@ -53,8 +53,8 @@ Route::group(['namespace' => 'Api', 'middleware' => ['cors']], function () {
     | ADMIN PAGE
     |--------------------------------------------------------------------------
     */
-    // Route::group(['middleware' => ['auth']], function () {
-    //     Route::group(['middleware' => ['role']], function () {
+    Route::group(['middleware' => ['auth']], function () {
+        //Route::group(['middleware' => ['role']], function () {
             /*
             |--------------------------------------------------------------------------
             | ADMIN - (role == 1)
@@ -90,7 +90,7 @@ Route::group(['namespace' => 'Api', 'middleware' => ['cors']], function () {
                 //Token
                 Route::post('refresh', 'LoginController@refreshToken');
                 Route::delete('delete-token', 'LoginController@deleteToken');
-       // });
+       //});
         /*
             |--------------------------------------------------------------------------
             | ADMIN - USER (role == 1 || role ==2)
@@ -109,5 +109,5 @@ Route::group(['namespace' => 'Api', 'middleware' => ['cors']], function () {
 
                 // //Logout
                 // Route::get('logout', 'LoginController@logout')->name('user.logout');
-   // });
+   });
 });

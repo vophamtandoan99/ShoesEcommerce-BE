@@ -19,18 +19,18 @@ class Auth
     {
         $token = $request->header('token');
         $session = $this->userRepository->check($token);
-        if(empty($token)){
-            return response()->json([
-                'code' => 500,
-                'message' => 'Tokens are not sent through the header'
-            ], 500);
-        }elseif(empty($session)){
-            return response()->json([
-                'code' => 500,
-                'message' => 'Invalid token'
-            ], 500);
-        }else{
+        // if(empty($token)){
+        //     return response()->json([
+        //         'code' => 500,
+        //         'message' => 'Tokens are not sent through the header'
+        //     ], 500);
+        // }elseif(empty($session)){
+        //     return response()->json([
+        //         'code' => 500,
+        //         'message' => 'Invalid token'
+        //     ], 500);
+        // }else{
                 return $next($request);
-        }
+        //}
     }
 }

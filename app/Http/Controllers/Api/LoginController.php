@@ -31,7 +31,7 @@ class LoginController extends Controller
             }
         }else{
             return response()->json([
-                'code' => 500,
+                'code' => 100,
                 'message' => 'Tài khoản hoặc mật khẩu không đúng'
             ], 500);
         }
