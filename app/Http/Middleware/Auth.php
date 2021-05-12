@@ -30,7 +30,7 @@ class Auth
                 'message' => 'Invalid token'
             ], 500);
         }else{
-                return $next($request);
+            return $next($request);
         }
     }
 }

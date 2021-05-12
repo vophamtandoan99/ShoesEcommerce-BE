@@ -34,16 +34,16 @@ Route::group(['namespace' => 'Api', 'middleware' => ['cors']], function () {
             Route::post('login-customer', 'CustomerController@login');
 
         //Payment WEB PAGE
-        Route::group(['middleware' => ['customer']], function () {
+        //Route::group(['middleware' => ['customer']], function () {
             //Cart
-            Route::post('add-cart', 'CartController@add');
-            Route::get('view-cart', 'CartController@view');
+            Route::post('add-cart/{customer}', 'CartController@add');
+            Route::get('view-cart/{customer}', 'CartController@view');
             Route::get('remove/{id}', 'CartController@remove');
-            Route::get('clear', 'CartController@clear');
+            Route::get('clear/{customer}', 'CartController@clear');
             Route::put('update-cart/{id}', 'CartController@update');
             //Payment (store bill)
-            Route::post('bill', 'BillController@store');
-        });
+            Route::post('bill/{customer}', 'BillController@store');
+        //});
 
         //Logout
         Route::get('logout', 'LoginController@logout');

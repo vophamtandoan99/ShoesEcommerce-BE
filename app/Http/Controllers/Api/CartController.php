@@ -21,9 +21,9 @@ class CartController extends BaseResource
         $this->productRepository = $productRepository;
         $this->cartRepository = $cartRepository;
     }
-    public function add(Request $request, CartRequest $cartRequest)
+    public function add(Request $request, CartRequest $cartRequest, $customer)
     {
-        $customer = $request->header('customer_id');
+        // $customer = $request->header('customer_id');
         $quantity = $cartRequest->quantity ?? 1;
         $cart = [   
             'customer_id'   => $customer,             
@@ -42,9 +42,8 @@ class CartController extends BaseResource
         }
     }
 
-    public function view(Request $request)
+    public function view(Request $request, $customer)
     {
-        $customer = $request->header('customer_id');
         return new CartCollection($this->cartRepository->show($customer));
     }
 
@@ -53,15 +52,13 @@ class CartController extends BaseResource
         return new BaseResource($this->cartRepository->update($cartRequest->updateFilter(), $id));
     }
 
-    public function remove($id, Request $request)
+    public function remove($id)
     {
-        $customer = $request->header('customer_id');
-        return new BaseResource($this->cartRepository->get($id, $customer));
+        return new BaseResource($this->cartRepository->remove($id));
     }
 
-    public function clear(Request $request)
+    public function clear($customer)
     {
-        $customer = $request->header('customer_id');
         return new BaseResource($this->cartRepository->clear($customer));
     }
 }

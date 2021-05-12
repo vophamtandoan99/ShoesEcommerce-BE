@@ -45,14 +45,13 @@ class CartRepository
                     'product.export_price as product_export_price', 'product.img as product_img',
                     'size.id as size_id', 'size.size as size', 'color.id as color_id',
                     'color.color as color', 'cart.quantity as quantity', 'cart.customer_id as customer_id')
-            ->where('customer_id', $customer)
+            ->where('cart.customer_id', $customer)
             ->paginate();
     }
 
-    public function get($id, $customer)
+    public function remove($id)
     {
-        return Cart::wherecustomer_id($customer)
-            ->whereid($id)
+        return Cart::findOrFail($id)
             ->delete();
     }
 
