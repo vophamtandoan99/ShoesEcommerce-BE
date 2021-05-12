@@ -37,7 +37,7 @@ class BillRepository
             'total'       => $cart['total_price'],
             'payment'     => $inputs['payment'],
             'dateorder'   => date('Y-m-d'),
-            'note'        => $inputs['note'],
+            'note'        => $inputs['note'] ? $inputs['note'] : '',
             'status'      => 1,
         ]);
     }

@@ -69,7 +69,7 @@ class BillController
             }
             $showBillDetail = new DetailCollection($this->billRepository->showBillDetail($bill->id));
             //deleteCart
-            $this->cartRepository->clear($customer_id);
+            //$this->cartRepository->clear($customer_id);
             $dataresult = [
                 'customer' => $customer,
                 'bill' => $bill,
@@ -77,7 +77,7 @@ class BillController
             ]; 
             //mail
                 $to_name = "Shoes E-commerce";
-                $to_mail = 'shyneward123@gmail.com';//$customer->email;
+                $to_mail = 'vophamtandoan99@gmail.com';
                 $data = ['name'=>"Shoes", "details"=>$dataresult];
                 Mail::send('mail', $data, function($message) use ($to_name, $to_mail){
                     $message->to($to_mail)->subject('Đơn hàng từ Shoes E-commerce');

@@ -25,8 +25,8 @@
             </div>
           </div>
           <div style="background-color: silver; margin-top: 2px;"><h3>Kiện hàng</h3>
-            <table class="table table-striped custab">
-                <thead class="thead-dark">
+            <table style="border-collapse: collapse;">
+                <thead>
                 <tr>
                 <th scope="col">Sản phẩm</th>
                 <!-- <th scope="col">Hình ảnh</th> -->
@@ -37,11 +37,9 @@
                 <th scope="col">Tổng tiền</th>
                 </tr>
                 </thead>
-                
                 @foreach ($details['billDetail'] as $key => $productDetails)
                 <tr>
                     <td>{{$productDetails->name}}</td>
-                    <!-- <td style="width: 80px; height: 50px;"><img src="http://127.0.0.1:8000/uploads/product/{{$productDetails->img}}" ></td> -->
                     <td>{{$productDetails->size}}</td>
                     <td>{{$productDetails->color}}</td>
                     <td>{{$productDetails->price}}</td>
@@ -56,7 +54,9 @@
                 <p>Tổng tiền: {{$details['bill']['total']}}</p>
                 <p>Ngày đặt: {{$details['bill']['dateorder']}}</p>
                 <p>Hình thức thanh toán: {{$details['bill']['payment']}}</p>
-                <p>Ghi chú: {{$details['bill']['note']}}</p>
+                @if(!empty($details['bill']['note']))
+                  <p>Ghi chú: {{$details['bill']['note']}}</p>
+                @endif
                 <p>Tình trạng: Đang chờ xử lý</p>
           </div>
         </div>

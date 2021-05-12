@@ -13,7 +13,7 @@ class BillResource extends BaseResource
             'total'         => $this->total,
             'dateorder'     => $this->dateorder,
             'payment'       => $this->payment,
-            'note'          => $this->note,
+            'note'          => $this->note ? $this->note : null,
             'status'        => $this->status
         ];
     }
