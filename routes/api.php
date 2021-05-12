@@ -28,8 +28,9 @@ Route::group(['namespace' => 'Api', 'middleware' => ['cors']], function () {
             Route::post('login', 'LoginController@login')->name('login');
 
         //Customer
-            //Register customer
-            Route::post('customer', 'CustomerController@store');
+            Route::post('customer', 'CustomerController@store'); //Register customer
+            Route::put('customer/{id}', 'CustomerController@update');
+            Route::get('customer/{id}', 'CustomerController@show');
             //Login WEB PAGE
             Route::post('login-customer', 'CustomerController@login');
 
@@ -44,9 +45,7 @@ Route::group(['namespace' => 'Api', 'middleware' => ['cors']], function () {
 
             //get total cart theo customer
             Route::get('total-cart/{customer}', 'CartController@total');
-            //Get customer
-            Route::get('customer/{id}', 'CustomerController@show');
-
+            
             //Payment (store bill)
             Route::post('bill/{customer}', 'BillController@store');
         //});

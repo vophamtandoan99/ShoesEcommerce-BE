@@ -12,8 +12,14 @@ class CustomerRequest extends FormRequest
     }
     public function rules()
     {
-        return $this->storeRules();
+        if($this->isMethod('post')){
+            return $this->storeRules();
+        }elseif($this->isMethod('put')){
+            return $this->updateRules();
+        }
     }
+
+    //Store Customer
     public function storeRules(): array
     {
         return [
@@ -27,6 +33,29 @@ class CustomerRequest extends FormRequest
         return $this->only([
             'email',
             'password'
+        ]);
+    }
+
+    //update Customer
+    public function updateRules(): array
+    {
+        return [
+            'email'             => 'required|email|unique:customer,email,'.$this->id,
+            'name'              => 'required|min:2|max:50',
+            'password'          => 'string|min:6|max:50|nullable',
+            'confirmpassword'   => 'string|min:6|max:50|same:password|nullable',
+            'phone'             => 'required|numeric',
+            'address'           => 'required|min:1|max:200'
+        ];
+    }
+    public function updateFilter()
+    {
+        return $this->only([
+            'email',
+            'name',
+            'password',
+            'phone',
+            'address'
         ]);
     }
 }
