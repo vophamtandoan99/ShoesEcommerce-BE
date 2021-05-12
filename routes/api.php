@@ -54,7 +54,7 @@ Route::group(['namespace' => 'Api', 'middleware' => ['cors']], function () {
     |--------------------------------------------------------------------------
     */
     Route::group(['middleware' => ['auth']], function () {
-        //Route::group(['middleware' => ['role']], function () {
+        Route::group(['middleware' => ['role']], function () {
             /*
             |--------------------------------------------------------------------------
             | ADMIN - (role == 1)
@@ -90,7 +90,7 @@ Route::group(['namespace' => 'Api', 'middleware' => ['cors']], function () {
                 //Token
                 Route::post('refresh', 'LoginController@refreshToken');
                 Route::delete('delete-token', 'LoginController@deleteToken');
-       //});
+       });
         /*
             |--------------------------------------------------------------------------
             | ADMIN - USER (role == 1 || role ==2)
