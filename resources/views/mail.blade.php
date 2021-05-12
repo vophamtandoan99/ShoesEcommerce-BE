@@ -3,9 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css">
     <title>Thư Tự Động</title>
 </head>
 <body>
@@ -25,11 +23,10 @@
             </div>
           </div>
           <div style="background-color: silver; margin-top: 2px;"><h3>Kiện hàng</h3>
-            <table style="border-collapse: collapse;">
+            <table style="border: 2px;">
                 <thead>
                 <tr>
                 <th scope="col">Sản phẩm</th>
-                <!-- <th scope="col">Hình ảnh</th> -->
                 <th scope="col">Size</th>
                 <th scope="col">Màu</th>
                 <th scope="col">Đơn giá</th>
@@ -39,7 +36,7 @@
                 </thead>
                 @foreach ($details['billDetail'] as $key => $productDetails)
                 <tr>
-                    <td>{{$productDetails->name}}</td>
+                    <td style="colspan: 2px; align:center">{{$productDetails->name}}</td>
                     <td>{{$productDetails->size}}</td>
                     <td>{{$productDetails->color}}</td>
                     <td>{{$productDetails->price}}</td>
@@ -64,7 +61,7 @@
   </div>
 </body>
 
-<style>
+<!-- <style>
   .main { background-color: white; }
   a:hover { border-left-width: 1em; min-height: 2em; }
   .resize{
@@ -82,5 +79,5 @@
       box-shadow: 3px 3px 0px transparent;
       transition: 0.5s;
       }
-</style>
+</style> -->
 </html>

@@ -66,4 +66,10 @@ class CartRepository
         return Cart::findOrFail($id)
             ->update(['quantity' => $inputs['quantity']]);
     }
+
+    public function total($customer)
+    {
+        return Cart::wherecustomer_id($customer)
+            ->count();
+    }
 }

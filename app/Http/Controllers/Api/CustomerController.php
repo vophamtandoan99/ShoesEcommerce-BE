@@ -40,6 +40,10 @@ class CustomerController extends BaseResource
                 return $this->sendError('Account or password is incorrect');
             } 
         }
-        
+    }
+
+    public function show($id)
+    {
+        return new CustomerResource($this->customerRepository->show($id));
     }
 }

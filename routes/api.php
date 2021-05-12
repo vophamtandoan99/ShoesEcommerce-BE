@@ -41,6 +41,12 @@ Route::group(['namespace' => 'Api', 'middleware' => ['cors']], function () {
             Route::get('remove/{id}', 'CartController@remove');
             Route::get('clear/{customer}', 'CartController@clear');
             Route::put('update-cart/{id}', 'CartController@update');
+
+            //get total cart theo customer
+            Route::get('total-cart/{customer}', 'CartController@total');
+            //Get customer
+            Route::get('customer/{id}', 'CustomerController@show');
+
             //Payment (store bill)
             Route::post('bill/{customer}', 'BillController@store');
         //});

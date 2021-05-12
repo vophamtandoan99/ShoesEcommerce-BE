@@ -61,4 +61,9 @@ class CartController extends BaseResource
     {
         return new BaseResource($this->cartRepository->clear($customer));
     }
+
+    public function total($customer)
+    {
+        return $this->sendResponse($this->cartRepository->total($customer), 'cart quantity');
+    }
 }
