@@ -115,6 +115,15 @@ class BillController
                 $totalAmount = $this->productRepository->sum($product_id);
                 $this->productRepository->amount($product_id, $totalAmount);
             }
+            $customer = new CustomerResource($this->customerRepository->show($bill->customer_id));
+            //mail
+            $to_name = "Shoes E-commerce";
+            $to_mail = $customer->email;
+            $data    = ["body"=>$bill->id, 'name'=> $customer->name];
+            Mail::send('truemail', $data, function($message) use ($to_name, $to_mail){
+                $message->to($to_mail)->subject('Đơn hàng từ Shoes E-commerce');
+                $message->from($to_mail, $to_name);
+            }); 
             return new BaseResource($this->billRepository->updateStatus($id));
         } 
     }
