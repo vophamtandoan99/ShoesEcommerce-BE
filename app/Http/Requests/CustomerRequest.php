@@ -40,10 +40,7 @@ class CustomerRequest extends FormRequest
     public function updateRules(): array
     {
         return [
-            'email'             => 'required|email|unique:customer,email,'.$this->id,
             'name'              => 'required|min:2|max:50',
-            'password'          => 'string|min:6|max:50|nullable',
-            'confirmpassword'   => 'string|min:6|max:50|same:password|nullable',
             'phone'             => 'required|numeric',
             'address'           => 'required|min:1|max:200'
         ];
@@ -51,9 +48,7 @@ class CustomerRequest extends FormRequest
     public function updateFilter()
     {
         return $this->only([
-            'email',
             'name',
-            'password',
             'phone',
             'address'
         ]);

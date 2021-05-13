@@ -39,4 +39,11 @@ class HomeRepository
         ->wherecolor_id($color)
         ->paginate();
     }
+
+    public function showProductNew()
+    {
+        return Product::wherestatus(1)->latest()
+            ->orderBy('created_at', 'desc')
+            ->paginate(10);
+    }
 }

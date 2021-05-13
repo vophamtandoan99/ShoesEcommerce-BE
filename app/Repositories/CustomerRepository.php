@@ -55,19 +55,7 @@ class CustomerRepository
              ->update([
                  'name'          => $inputs['name'],
                  'phone'         => $inputs['phone'],
-                 'address'       => $inputs['address'],
-                 'email'         => $inputs['email'],
-                 'password'      => encrypt($inputs['password'])//Hash::make($inputs['password'])
-             ]);
-     }
-     public function editNoPass($inputs, $id)
-     {
-         return Customer::findOrFail($id)
-             ->update([
-                 'name'          => $inputs['name'],
-                 'phone'         => $inputs['phone'],
-                 'address'       => $inputs['address'],
-                 'email'         => $inputs['email']
+                 'address'       => $inputs['address']
              ]);
      }
 }

@@ -49,10 +49,6 @@ class CustomerController extends BaseResource
 
     public function update(CustomerRequest $request, $id)
     {
-        if(!empty($request->password)){
-            return new BaseResource($this->customerRepository->edit($request->updateFilter(), $id));
-        }else{
-            return new BaseResource($this->customerRepository->editNoPass($request->updateFilter(), $id));
-        }
+        return new BaseResource($this->customerRepository->edit($request->updateFilter(), $id));
     }
 }

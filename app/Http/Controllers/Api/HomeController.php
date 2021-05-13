@@ -19,6 +19,11 @@ class HomeController extends Controller
         $this->homeRepository = $homeRepository;
     }
 
+
+    public function show()
+    {
+        return new ProductCollection($this->homeRepository->showProductNew());
+    }
     public function getProductSupplier($id)
     {
         return new ProductCollection($this->homeRepository->getSupplier($id));
