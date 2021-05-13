@@ -19,7 +19,7 @@ class CategoryRepository
             return $query->where('name', 'LIKE', '%' . $inputs['name'] . '%');
         })
         ->orderBy('name', 'desc')
-        ->paginate(10);
+        ->paginate();
     }
     
     //Store Category

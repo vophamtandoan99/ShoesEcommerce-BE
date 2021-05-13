@@ -47,8 +47,8 @@ class ProductRequest extends FormRequest
             'img'           => 'required|file|image',
             'note'          => 'required|string|min:1|max:1000',
             'import_price'  => 'required|integer|min:0',
-            'export_price'  => 'required|integer:min:0',
-            'sale'          => 'required|integer|max:100',
+            'export_price'  => 'nullable',
+            'sale'          => 'nullable',
             'supplier_id'   => 'required|integer',
             'category_id'   => 'required|integer'
         ];
@@ -74,8 +74,8 @@ class ProductRequest extends FormRequest
             'name'          => 'required|string|min:1|max:255|unique:product,name,'.$this->id,
             'note'          => 'required|string|min:1|max:1000',
             'import_price'  => 'required|integer|min:0',
-            'export_price'  => 'required|integer:min:0',
-            'sale'          => 'required|integer|max:100',
+            'export_price'  => 'nullable',
+            'sale'          => 'nullable',
             'supplier_id'   => 'required|integer',
             'category_id'   => 'required|integer'
         ];

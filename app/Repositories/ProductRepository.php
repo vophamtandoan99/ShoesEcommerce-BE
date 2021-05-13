@@ -37,7 +37,7 @@ class ProductRepository
             return $query->where('product.name', 'LIKE', '%' . $inputs['name'] . '%');
         })
         ->orderBy('product.sale', 'desc')
-        ->paginate(10);
+        ->paginate();
     }
 
     //Show Product
@@ -54,8 +54,8 @@ class ProductRepository
             'img'           => $newNamefile,
             'note'          => $inputs['note'],
             'import_price'  => $inputs['import_price'],
-            'export_price'  => $inputs['export_price'],
-            'sale'          => $inputs['sale'],
+            'export_price'  => $inputs['export_price'] ? $inputs['export_price'] : null,
+            'sale'          => $inputs['sale'] ? $inputs['sale'] : null,
             'supplier_id'   => $inputs['supplier_id'],
             'category_id'   => $inputs['category_id'],
             'status'        => 1
@@ -91,8 +91,8 @@ class ProductRepository
                 'name'          => $inputs['name'],
                 'note'          => $inputs['note'],
                 'import_price'  => $inputs['import_price'],
-                'export_price'  => $inputs['export_price'],
-                'sale'          => $inputs['sale'],
+                'export_price'  => $inputs['export_price'] ? $inputs['export_price'] : null,
+                'sale'          => $inputs['sale'] ? $inputs['sale'] : null,
                 'supplier_id'   => $inputs['supplier_id'],
                 'category_id'   => $inputs['category_id']
             ]);
