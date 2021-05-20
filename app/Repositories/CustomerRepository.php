@@ -11,6 +11,14 @@ use Config;
 
 class CustomerRepository
 {
+    public function search($inputs)
+    {
+        return Customer::when(isset($inputs['name']), function ($query) use ($inputs) {
+            return $query->where('name', 'LIKE', '%' . $inputs['name'] . '%');
+        })
+        ->orderBy('id', 'desc')
+        ->paginate();
+    }
     public function show($id)
     {
         return Customer::findOrFail($id);

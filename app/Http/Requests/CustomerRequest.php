@@ -12,11 +12,27 @@ class CustomerRequest extends FormRequest
     }
     public function rules()
     {
-        if($this->isMethod('post')){
+        if ($this->isMethod('get')){
+            return $this->searchRules();
+        }elseif($this->isMethod('post')){
             return $this->storeRules();
         }elseif($this->isMethod('put')){
             return $this->updateRules();
         }
+    }
+
+     //Search Product
+    public function searchRules():array
+    {
+        return [
+            'name'      =>'string|nullable',
+        ];
+    }
+    public function searchFilter()
+    {
+        return $this->only([
+            'name'
+        ]);
     }
 
     //Store Customer

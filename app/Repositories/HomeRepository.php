@@ -43,7 +43,7 @@ class HomeRepository
     public function showProductNew()
     {
         return Product::wherestatus(1)->latest()
-            ->orderBy('created_at', 'desc')
-            ->paginate(10);
+            //->orderBy('created_at', 'desc')
+            ->paginate(6);
     }
 }

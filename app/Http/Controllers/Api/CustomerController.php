@@ -19,7 +19,12 @@ class CustomerController extends BaseResource
 
     public function __construct(CustomerRepository $customerRepository)
     {
-        $this->customerRepository   = $customerRepository;
+        $this->customerRepository = $customerRepository;
+    }
+
+    public function search(CustomerRequest $customerRequest)
+    {
+        return new CustomerCollection($this->customerRepository->search($customerRequest->searchFilter()));
     }
 
     public function store(CustomerRequest $customerRequest)

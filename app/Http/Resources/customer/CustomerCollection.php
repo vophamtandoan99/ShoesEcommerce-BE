@@ -9,11 +9,11 @@ class CustomerCollection extends BaseCollection
     {
         return $this->map(function ($customer) {
             return [
-                'id' => $customer->id,
-                'email' => $customer->email,
-                'name' => $customer->name
-                'phone' => $customer->phone,
-                'address' => $customer->address,
+                'id'        => $customer->id,
+                'email'     => $customer->email,
+                'name'      => $customer->name,
+                'phone'     => $customer->phone,
+                'address'   => $customer->address,
             ];
         });
     }
