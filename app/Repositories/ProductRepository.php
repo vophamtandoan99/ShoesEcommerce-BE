@@ -37,7 +37,26 @@ class ProductRepository
             return $query->where('product.name', 'LIKE', '%' . $inputs['name'] . '%');
         })
         ->orderBy('product.sale', 'desc')
-        ->paginate();
+        ->paginate(100);
+    }
+
+    public function searchPSC($inputs)
+    {
+        return ProductSizeColor::join('product', 'product_size_color.product_id', '=', 'product.id')
+        ->join('color', 'product_size_color.color_id', '=', 'color.id')
+        ->join('size', 'product_size_color.size_id', '=', 'size.id')
+        ->select('product_size_color.id as id', 
+               'product.name as product',
+               'color.color as color',
+               'size.size as size')
+        ->when(isset($inputs['id']), function ($query) use ($inputs) {
+            return $query->where('product_size_color.id', $inputs['id']);
+        })
+        ->when(isset($inputs['product']), function ($query) use ($inputs) {
+            return $query->where('product.name', 'LIKE', '%' . $inputs['product'] . '%');
+        })
+        ->orderBy('product_size_color.id', 'desc')
+        ->paginate(10000);
     }
 
     //Show Product

@@ -12,6 +12,7 @@ use App\Http\Resources\product\SizeCollection;
 use App\Http\Resources\product\ColorCollection;
 use App\Http\Requests\ProductRequest;
 use App\Http\Requests\ProductSizeColorRequest;
+use App\Http\Resources\product\ProductSizeColorCollection;
 use App\Repositories\ProductRepository;
 
 class ProductController
@@ -27,6 +28,11 @@ class ProductController
     public function search(ProductRequest $request)
     {
         return new ProductCollection($this->productRepository->search($request->searchFilter()));
+    }
+
+    public function searchPSC(ProductSizeColorRequest $request)
+    {
+        return new ProductSizeColorCollection($this->productRepository->searchPSC($request->searchFilter()));
     }
 
     //Show Product
@@ -46,7 +52,7 @@ class ProductController
         return new BaseResource($this->productRepository->store($request->storeFilter(), $newNamefile));        
     }
 
-    //Store WareHouse
+    //Store altribute
     public function storePSC(ProductSizeColorRequest $requestSizeColor)
     {
         $data = [
@@ -58,15 +64,15 @@ class ProductController
         $checkData     = $this->productRepository->checkData($data);
         /*Store ProductSizeColor*/
         if(empty($checkData)){
-            $warehouse = new BaseResource($this->productRepository->storePSC($data));
+            $altribute = new BaseResource($this->productRepository->storePSC($data));
         }else{
-            $warehouse = new BaseResource($this->productRepository->storePSCNotNull($data, $checkData));
+            $altribute = new BaseResource($this->productRepository->storePSCNotNull($data, $checkData));
         }
         /*Update quantity Product*/
-            if($warehouse == true){
+            if($altribute == true){
                 $this->productRepository->amount($data['product_id']);
             }
-        return $warehouse;
+        return $altribute;
     }
 
     //Update Product
@@ -75,12 +81,12 @@ class ProductController
         return new BaseResource($this->productRepository->update($request->updateFilter(), $id));
     }
 
-    /*Update WareHouse*/
+    /*Update altribute*/
     public function updatePSC(ProductSizeColorRequest $requestSizeColor, $id)
     {
-        $UpdateWarehouse = new BaseResource($this->productRepository->updatePSC($requestSizeColor->updateFilter(), $id));
+        $Updatealtribute = new BaseResource($this->productRepository->updatePSC($requestSizeColor->updateFilter(), $id));
         $this->productRepository->amount($requestSizeColor->product_id);
-        return $UpdateWarehouse;
+        return $Updatealtribute;
     }
     
     //Delete Product (Update Status)

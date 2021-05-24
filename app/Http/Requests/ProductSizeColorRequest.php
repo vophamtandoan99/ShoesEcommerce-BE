@@ -12,12 +12,30 @@ class ProductSizeColorRequest extends FormRequest
     }
     public function rules()
     {
-       if($this->isMethod('post')){
+        if ($this->isMethod('get')){
+            return $this->searchRules();
+        }elseif($this->isMethod('post')){
             return $this->storeRules();
         }elseif($this->isMethod('put')){
             return $this->updateRules();
         }
     }
+
+     //Search Warehouse
+     public function searchRules():array
+     {
+         return [
+             'id'        =>'integer|nullable',
+             'product'   =>'string|nullable',
+         ];
+     }
+     public function searchFilter()
+     {
+         return $this->only([
+             'id',
+             'product'
+         ]);
+     }
 
     //Store Product Size
     public function storeRules(): array

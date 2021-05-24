@@ -83,9 +83,10 @@ Route::group(['namespace' => 'Api', 'middleware' => ['cors']], function () {
                 Route::put('product/{id}', 'ProductController@update');
                 Route::delete('product/{id}', 'ProductController@destroy');
 
-                //Warehouse
-                Route::post('warehouse', 'ProductController@storePSC');
-                Route::put('warehouse/{id}', 'ProductController@updatePSC');
+                //altribute
+                Route::get('altribute', 'ProductController@searchPSC');
+                Route::post('altribute', 'ProductController@storePSC');
+                Route::put('altribute/{id}', 'ProductController@updatePSC');
 
                 //User
                 Route::get('user', 'UserController@search');
