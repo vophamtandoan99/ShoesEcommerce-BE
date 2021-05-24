@@ -36,57 +36,51 @@ class ProductController
     }
 
     //Store Product
-    public function store(ProductRequest $request, ProductSizeColorRequest $requestSizeColor)
+    public function store(ProductRequest $request)
     {
         /*Upload Image*/
         $image          = $request->file('img');
         $newNamefile    = rand().'.'.$image->getClientOriginalExtension();
         $image->move(public_path('/uploads/product'),$newNamefile);
         /*Store Product*/
-        $product        = new BaseResource($this->productRepository->store($request->storeFilter(), $newNamefile));
-        /*Store Product Size Color*/
-        $size = $requestSizeColor->size_id;
-        $color = $requestSizeColor->color_id; 
-        $amount = $requestSizeColor->amount;
-        if($product == true && isset($size) && isset($color) && isset($amount)){
-            for($x = 0; $x < count($amount); $x++) {
-                $data = ['size_id'=>$size[$x], 'color_id'=> $color[$x], 'amount'=>$amount[$x]];
-                $PSC = new BaseResource($this->productRepository->storePSC($data, $product->id));
-            }
-            /*Update quantity Product*/
-            if($PSC == true){
-                $totalAmount = $this->productRepository->sum($product->id);
-                $this->productRepository->amount($product->id, $totalAmount);
-            }
-            return $product;
+        return new BaseResource($this->productRepository->store($request->storeFilter(), $newNamefile));        
+    }
+
+    //Store WareHouse
+    public function storePSC(ProductSizeColorRequest $requestSizeColor)
+    {
+        $data = [
+            'product_id'    => $requestSizeColor->product_id,
+            'color_id'      => $requestSizeColor->color_id,
+            'size_id'       => $requestSizeColor->size_id,
+            'amount'        => $requestSizeColor->amount
+        ];
+        $checkData     = $this->productRepository->checkData($data);
+        /*Store ProductSizeColor*/
+        if(empty($checkData)){
+            $warehouse = new BaseResource($this->productRepository->storePSC($data));
+        }else{
+            $warehouse = new BaseResource($this->productRepository->storePSCNotNull($data, $checkData));
         }
-        
+        /*Update quantity Product*/
+            if($warehouse == true){
+                $this->productRepository->amount($data['product_id']);
+            }
+        return $warehouse;
     }
 
     //Update Product
-    public function update(ProductRequest $request, ProductSizeColorRequest $requestSizeColor, $id)
+    public function update(ProductRequest $request, $id)
     {
-        /*Update Product*/
-        $Updateproduct = new BaseResource($this->productRepository->update($request->updateFilter(), $id));
-        /*Update Product Size Color*/
-        $size   = $requestSizeColor->size_id;
-        $color  = $requestSizeColor->color_id;
-        $amount = $requestSizeColor->amount;
-        if(isset($size) && isset($color) && isset($amount)){
-            $productPSC = $this->productRepository->showPSC($id);
-            $idPSC = [];
-            foreach($productPSC as $row){
-                array_push($idPSC, $row['id']);
-            }
-            for($x = 0; $x < count($amount); $x++) {
-                $data = ['id'=>$idPSC[$x], 'size_id'=>$size[$x], 'color_id'=> $color[$x], 'amount'=>$amount[$x]];
-                $PSC = new BaseResource($this->productRepository->updatePSC($data));
-            }
-            /*Update Quantity Product*/
-            $totalAmount = $this->productRepository->sum($id);
-            $this->productRepository->amount($id, $totalAmount);
-            return $Updateproduct;
-        }
+        return new BaseResource($this->productRepository->update($request->updateFilter(), $id));
+    }
+
+    /*Update WareHouse*/
+    public function updatePSC(ProductSizeColorRequest $requestSizeColor, $id)
+    {
+        $UpdateWarehouse = new BaseResource($this->productRepository->updatePSC($requestSizeColor->updateFilter(), $id));
+        $this->productRepository->amount($requestSizeColor->product_id);
+        return $UpdateWarehouse;
     }
     
     //Delete Product (Update Status)
@@ -108,11 +102,6 @@ class ProductController
     public function getColor()
     {
         return new ColorCollection($this->productRepository->getColor());
-    }
-
-    // public function category($id)
-    // {
-    //     return new ProductCollection($this->productRepository->category($id));
-    // }    
+    } 
 }
  

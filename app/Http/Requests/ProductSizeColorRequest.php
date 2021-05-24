@@ -23,10 +23,10 @@ class ProductSizeColorRequest extends FormRequest
     public function storeRules(): array
     {
         return [
-            'product_id' => 'integer',
-            'size_id'    => 'required|array',
-            'color_id'   => 'required|array',
-            'amount'     => 'required|array',
+            'product_id' => 'required',
+            'size_id'    => 'required',
+            'color_id'   => 'required',
+            'amount'     => 'required',
         ];
     }
     public function storeFilter()
@@ -43,10 +43,10 @@ class ProductSizeColorRequest extends FormRequest
     public function updateRules(): array
     {
         return [
-            'product_id' => 'integer',
-            'size_id'    => 'required|array',
-            'color_id'   => 'required|array',
-            'amount'     => 'required|array',
+            'product_id' => 'required',
+            'size_id'    => 'required',
+            'color_id'   => 'required',
+            'amount'     => 'required',
         ];
     }
     public function updateFilter()

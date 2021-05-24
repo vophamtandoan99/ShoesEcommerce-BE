@@ -112,8 +112,7 @@ class BillController
                 array_push($product, $row->product_id);
             }
             foreach($product as $product_id){
-                $totalAmount = $this->productRepository->sum($product_id);
-                $this->productRepository->amount($product_id, $totalAmount);
+                $this->productRepository->amount($product_id);
             }
             $customer = new CustomerResource($this->customerRepository->show($bill->customer_id));
             //mail
