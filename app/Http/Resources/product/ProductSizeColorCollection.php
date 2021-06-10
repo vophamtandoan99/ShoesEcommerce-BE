@@ -12,7 +12,8 @@ class ProductSizeColorCollection extends BaseCollection
                 'id'            => $altribute->id,
                 'product'       => $altribute->product,
                 'color'         => $altribute->color,
-                'size'          => $altribute->size
+                'size'          => $altribute->size,
+                'quantity'      => $altribute->amount
             ];
         });
     }

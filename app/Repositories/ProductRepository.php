@@ -48,7 +48,8 @@ class ProductRepository
         ->select('product_size_color.id as id', 
                'product.name as product',
                'color.color as color',
-               'size.size as size')
+               'size.size as size',
+               'product_size_color.amount as amount')
         ->when(isset($inputs['id']), function ($query) use ($inputs) {
             return $query->where('product_size_color.id', $inputs['id']);
         })
@@ -89,6 +90,16 @@ class ProductRepository
             'amount'     => $data['amount']
         ]);
     }
+
+    public function storeWarehouse($id, $row){
+        return ProductSizeColor::create([
+            'product_id' => $id,
+            'size_id'    => $row['size_id'],
+            'color_id'   => $row['color_id'],
+            'amount'     => $row['quantity']
+        ]);
+    }
+
     public function storePSCNotNull($data, $checkData)
     {
         return ProductSizeColor::findOrFail($checkData->id)

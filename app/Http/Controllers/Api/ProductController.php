@@ -12,6 +12,7 @@ use App\Http\Resources\product\SizeCollection;
 use App\Http\Resources\product\ColorCollection;
 use App\Http\Requests\ProductRequest;
 use App\Http\Requests\ProductSizeColorRequest;
+use App\Http\Requests\WarehouseRequest;
 use App\Http\Resources\product\ProductSizeColorCollection;
 use App\Repositories\ProductRepository;
 
@@ -42,14 +43,22 @@ class ProductController
     }
 
     //Store Product
-    public function store(ProductRequest $request)
+    public function store(ProductRequest $request, WarehouseRequest $warehouseRequest)
     {
+        
         /*Upload Image*/
         $image          = $request->file('img');
         $newNamefile    = rand().'.'.$image->getClientOriginalExtension();
         $image->move(public_path('/uploads/product'),$newNamefile);
         /*Store Product*/
-        return new BaseResource($this->productRepository->store($request->storeFilter(), $newNamefile));        
+        $product = new BaseResource($this->productRepository->store($request->storeFilter(), $newNamefile)); 
+        /*Store ProductSizeColor*/
+        $data = $warehouseRequest->data;
+        foreach($data as $row){
+            $warehouse = new BaseResource($this->productRepository->storeWarehouse($product->id, $row)); 
+        }
+        $this->productRepository->amount($product->id);
+        return $product;
     }
 
     //Store altribute
