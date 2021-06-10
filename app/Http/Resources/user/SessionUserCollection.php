@@ -13,7 +13,8 @@ class SessionUserCollection extends BaseCollection
                 'name'      => $token->name,
                 'email'     => $token->email,
                 'img'       => $token->img,
-                'role'      => $token->role
+                'role'      => $token->role,
+                'id'        => $token->id
             ];
         });
     }
