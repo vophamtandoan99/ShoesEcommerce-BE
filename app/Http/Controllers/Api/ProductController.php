@@ -43,7 +43,7 @@ class ProductController
     }
 
     //Store Product
-    public function store(ProductRequest $request, WarehouseRequest $warehouseRequest)
+    public function store(ProductRequest $request)
     {
         
         /*Upload Image*/
@@ -51,37 +51,37 @@ class ProductController
         $newNamefile    = rand().'.'.$image->getClientOriginalExtension();
         $image->move(public_path('/uploads/product'),$newNamefile);
         /*Store Product*/
-        $product = new BaseResource($this->productRepository->store($request->storeFilter(), $newNamefile)); 
-        /*Store ProductSizeColor*/
-        $data = $warehouseRequest->data;
-        foreach($data as $row){
-            $warehouse = new BaseResource($this->productRepository->storeWarehouse($product->id, $row)); 
-        }
-        $this->productRepository->amount($product->id);
-        return $product;
+        return new BaseResource($this->productRepository->store($request->storeFilter(), $newNamefile)); 
     }
 
     //Store altribute
-    public function storePSC(ProductSizeColorRequest $requestSizeColor)
+    public function storePSC(WarehouseRequest $warehouseRequest)//ProductSizeColorRequest $requestSizeColor, 
     {
-        $data = [
-            'product_id'    => $requestSizeColor->product_id,
-            'color_id'      => $requestSizeColor->color_id,
-            'size_id'       => $requestSizeColor->size_id,
-            'amount'        => $requestSizeColor->amount
-        ];
-        $checkData     = $this->productRepository->checkData($data);
-        /*Store ProductSizeColor*/
-        if(empty($checkData)){
-            $altribute = new BaseResource($this->productRepository->storePSC($data));
-        }else{
-            $altribute = new BaseResource($this->productRepository->storePSCNotNull($data, $checkData));
+        // $data = [
+        //     'product_id'    => $requestSizeColor->product_id,
+        //     'color_id'      => $requestSizeColor->color_id,
+        //     'size_id'       => $requestSizeColor->size_id,
+        //     'amount'        => $requestSizeColor->amount
+        // ];
+        // $checkData     = $this->productRepository->checkData($data);
+        // /*Store ProductSizeColor*/
+        // if(empty($checkData)){
+        //     $altribute = new BaseResource($this->productRepository->storePSC($data));
+        // }else{
+        //     $altribute = new BaseResource($this->productRepository->storePSCNotNull($data, $checkData));
+        // }
+        // /*Update quantity Product*/
+        //     if($altribute == true){
+        //         $this->productRepository->amount($data['product_id']);
+        //     }
+        // return $altribute;
+        $id = $warehouseRequest->product_id;
+        $data = $warehouseRequest->data;
+        foreach($data as $row){
+            $warehouse = new BaseResource($this->productRepository->storeWarehouse($id, $row)); 
         }
-        /*Update quantity Product*/
-            if($altribute == true){
-                $this->productRepository->amount($data['product_id']);
-            }
-        return $altribute;
+        return new BaseResource($this->productRepository->amount($id));
+        
     }
 
     //Update Product

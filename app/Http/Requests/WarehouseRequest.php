@@ -32,6 +32,7 @@ class WarehouseRequest extends FormRequest
     public function storeFilter()
     {
         return $this->only([
+            'product_id',
             'data'
         ]);
     }
